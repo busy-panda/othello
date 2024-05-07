@@ -13,7 +13,7 @@ export default function WhoIsPlaying ()  {
 
     useEffect(() => {
         setTimeout(() => setLabelVisible(true), DELAY)
-    })
+    }, [])
 
     return (
         <div 

@@ -11,7 +11,7 @@ export default function ResetButton ()  {
 
     useEffect(() => {
         setTimeout(() => setButtonVisible(true), DELAY)
-    })
+    }, [])
 
     return (
         <Button 
