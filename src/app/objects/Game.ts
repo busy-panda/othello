@@ -1,20 +1,21 @@
 import { Color } from "./Color";
 import { Position } from "./Position";
 
-const BOARD_SIZE: number = 8;
-const OTHELLO: string = 'othello';
-const POSITIONS_AROUND: Position[] = [
-    Position.of(-1, 0),
-    Position.of(+1, 0),
-    Position.of(0, -1),
-    Position.of(0, +1),
-    Position.of(-1, -1),
-    Position.of(-1, +1),
-    Position.of(+1, -1),
-    Position.of(+1, +1)
-];
-
 export class Game {
+
+    static readonly BOARD_SIZE: number = 8;
+
+    private static readonly OTHELLO: string = 'othello';
+    private static readonly POSITIONS_AROUND: Position[] = [
+        Position.of(-1, 0),
+        Position.of(+1, 0),
+        Position.of(0, -1),
+        Position.of(0, +1),
+        Position.of(-1, -1),
+        Position.of(-1, +1),
+        Position.of(+1, -1),
+        Position.of(+1, +1)
+    ];
 
     playing: Color;
     board: Color[][];
@@ -31,7 +32,7 @@ export class Game {
 
     static retrieveGame (): Game {
 
-        const val = localStorage.getItem(OTHELLO);
+        const val = localStorage.getItem(Game.OTHELLO);
         if (val == null) {
             return this.newGame();
         } else {
@@ -54,7 +55,7 @@ export class Game {
                 [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY],
             ]);
 
-        localStorage.setItem(OTHELLO, JSON.stringify(game));
+        localStorage.setItem(Game.OTHELLO, JSON.stringify(game));
         return game;
     };
 
@@ -63,11 +64,11 @@ export class Game {
         return this.board[pos.y][pos.x];
     };
 
-    setColor (pos: Position, color: Color) {
+    private setColor (pos: Position, color: Color) {
         this.board[pos.y][pos.x] = color;
     };
 
-    playPosition (currPos: Position, play: Position) {
+    private playPosition (currPos: Position, play: Position) {
 
         const dir = this.getDirection(currPos, play);
         const dist = this.getDistance(currPos, play);
@@ -78,12 +79,12 @@ export class Game {
         }
     };
 
-    getDistance (a: Position, b: Position): number {
+    private getDistance (a: Position, b: Position): number {
         const p = b.substract(a);
         return Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2));
     };
 
-    getDirection (a: Position, b: Position): Position {
+    private getDirection (a: Position, b: Position): Position {
 
         const p = b.substract(a);
         if (p.x > 1) { p.x = 1; }
@@ -107,7 +108,7 @@ export class Game {
 
         this.setColor(play, this.playing);
         this.switchPlayer();
-        localStorage.setItem(OTHELLO, JSON.stringify(this));
+        localStorage.setItem(Game.OTHELLO, JSON.stringify(this));
         return true;
     };
 
@@ -115,10 +116,10 @@ export class Game {
         return new Game(this.playing, this.board);
     };
 
-    findPosition(pos: Position, shift: Position, distance: number): Position {
+    private findPosition(pos: Position, shift: Position, distance: number): Position {
 
         const currPos = pos.add(shift);
-        if (currPos.isOutsideBoard(BOARD_SIZE)) {
+        if (currPos.isOutsideBoard(Game.BOARD_SIZE)) {
             return null;
         }
         const currColor = this.getColor(currPos);
@@ -135,7 +136,7 @@ export class Game {
         }
     };
 
-    getOppositeColor(playing: Color): Color {
+    private getOppositeColor(playing: Color): Color {
 
         if (playing == Color.BLACK)
             return Color.WHITE;
@@ -143,9 +144,9 @@ export class Game {
             return Color.BLACK;
     };
 
-    findPositions(play: Position): Position[] {
+    private findPositions(play: Position): Position[] {
 
-        if (play.isOutsideBoard(BOARD_SIZE)) {
+        if (play.isOutsideBoard(Game.BOARD_SIZE)) {
             return [];
         }
         const curr = this.getColor(play);
@@ -155,7 +156,7 @@ export class Game {
         } else {
             let positions: Position[] = [];
 
-            POSITIONS_AROUND.forEach((a: Position) => {
+            Game.POSITIONS_AROUND.forEach((a: Position) => {
                 let p = this.findPosition(play, a, 0);
                 if (p != null) {
                     positions.push(p);
@@ -166,7 +167,7 @@ export class Game {
         }
     };
 
-    switchPlayer(): void {
+    private switchPlayer(): void {
         if (this.playing === Color.WHITE) {
             this.playing = Color.BLACK;
         } else {
