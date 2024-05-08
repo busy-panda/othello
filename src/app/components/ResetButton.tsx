@@ -6,12 +6,12 @@ import { GameDispatchAction } from "@/providers/GameContext";
 export default function ResetButton ()  {
 
     const DELAY = 1000;
-    const dispatchGame = useContext(GameDispatchContext)
+    const dispatchGame = useContext(GameDispatchContext);
     const [buttonVisible, setButtonVisible] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => setButtonVisible(true), DELAY)
-    }, [])
+        setTimeout(() => setButtonVisible(true), DELAY);
+    }, []);
 
     return (
         <Button
@@ -24,5 +24,5 @@ export default function ResetButton ()  {
             onClick={() => dispatchGame( {type:'reset'} as GameDispatchAction )}
             text="RESET"
         />
-    )
+    );
 }

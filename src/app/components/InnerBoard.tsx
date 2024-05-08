@@ -1,8 +1,8 @@
 
-export default function  InnerBoard  ({ children }) {
+export default function  InnerBoard  ({ children } : any) {
 
     return (
-        <div 
+        <div
             style={
                 {
                     position: 'relative',
@@ -14,6 +14,6 @@ export default function  InnerBoard  ({ children }) {
             }>
             {children}
         </div>
-    )
+    );
 
 }

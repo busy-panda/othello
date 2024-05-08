@@ -11,7 +11,7 @@ import { retrieveGame } from "@/providers/gameReducer";
 import { useLoadingStatus } from "@/providers/useLoadingStatus";
 import WhoIsPlaying from "./WhoIsPlaying";
 
-export default function Game() { 
+export default function Game() {
 
     const [game, dispatchGame] = useReducer(gameReducer, retrieveGame());
     const isLoading = useLoadingStatus();
@@ -28,5 +28,5 @@ export default function Game() {
             <WhoIsPlaying />
         </GameDispatchContext.Provider>
     </GameContext.Provider>
-    )
+    );
 }

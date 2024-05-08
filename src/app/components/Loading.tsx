@@ -1,11 +1,11 @@
-import { useLoadingStatus } from "@/providers/useLoadingStatus"
+import { useLoadingStatus } from "@/providers/useLoadingStatus";
 
-export default function Loading({children}) {
+export default function Loading({children}:any) {
 
-    const isLoading = useLoadingStatus()
+    const isLoading = useLoadingStatus();
 
     return (
-        <div style={{ 
+        <div style={{
             backgroundColor: '#111',
             paddingLeft: '4%',
             paddingRight: '4%',
@@ -18,5 +18,5 @@ export default function Loading({children}) {
             transition: 'opacity 1s',
         }}
         >{children}</div>
-    )
+    );
 }

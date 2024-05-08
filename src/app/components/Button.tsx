@@ -17,5 +17,5 @@ export default function Button({text, onClick, style}: any) {
             }}
             onClick={onClick}
         >{text}</button>
-    )
+    );
 }

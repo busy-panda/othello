@@ -10,29 +10,29 @@ import { Dispatch } from "react";
 
 export default function  Cell  ({ x  , y} : any)  {
 
-    const game : Game = useContext(GameContext)
-    const dispatchGame : Dispatch<GameDispatchAction> = useContext(GameDispatchContext)
+    const game : Game = useContext(GameContext);
+    const dispatchGame : Dispatch<GameDispatchAction> = useContext(GameDispatchContext);
 
     const onCellClick = () => {
 
         dispatchGame( {
             type:'play',
             pos: currentPosition} as GameDispatchAction
-        )
-    }
+        );
+    };
 
     const currentPosition = Position.of(x,y);
 
     const getImage = () => {
         const color = getColor(game.board, currentPosition);
         if (color === Color.WHITE) {
-            return "url('white.png')"
+            return "url('white.png')";
         } else if (color === Color.BLACK) {
-            return "url('black.png')"
+            return "url('black.png')";
         } else {
             return '';
         }
-    }
+    };
 
     return (
         <div className="flex-grow"
@@ -44,6 +44,6 @@ export default function  Cell  ({ x  , y} : any)  {
             }}
              onClick={onCellClick}>
         </div>
-    )
+    );
 
 }

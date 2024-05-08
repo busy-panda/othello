@@ -8,12 +8,12 @@ export default function WhoIsPlaying ()  {
     const DELAY = 1000;
 
     const [labelVisible, setLabelVisible] = useState(false);
-    const game = useContext(GameContext)
+    const game = useContext(GameContext);
     const playing = game.playing === Color.WHITE ? 'WHITE' : 'BLACK';
 
     useEffect(() => {
-        setTimeout(() => setLabelVisible(true), DELAY)
-    }, [])
+        setTimeout(() => setLabelVisible(true), DELAY);
+    }, []);
 
     return (
         <div
@@ -31,5 +31,5 @@ export default function WhoIsPlaying ()  {
             }}
 
         >Playing: {playing}</div>
-    )
+    );
 }

@@ -9,7 +9,7 @@ export default function  OuterBoard  ({ image, children }: any)  {
 
     const orientationchange = () => {
         setIsLandscape(screen.availWidth > screen.availHeight);
-    }
+    };
 
     useEffect(() => {
 
@@ -17,7 +17,7 @@ export default function  OuterBoard  ({ image, children }: any)  {
         window.addEventListener("orientationchange", orientationchange);
         return () => {
             window.removeEventListener("orientationchange", orientationchange);
-        }
+        };
     }, []);
 
     return (
@@ -35,6 +35,6 @@ export default function  OuterBoard  ({ image, children }: any)  {
             }>
             {children}
         </div>
-    )
+    );
 
 }
