@@ -1,22 +1,23 @@
 import { util } from "./util";
+import { Position } from "./Position";
 
-export const Color = {
-  BLACK: 'B',
-  WHITE: 'W',
-  NONE: ' '
+export enum Color {
+  BLACK = 'B',
+  WHITE = 'W',
+  NONE = ' '
 }
 
-const BOARD_SIZE = 8;
+const BOARD_SIZE: number = 8;
 
-const POSITIONS_AROUND = [
-  { x: -1, y: 0 },
-  { x: +1, y: 0 },
-  { x: 0, y: -1 },
-  { x: 0, y: +1 },
-  { x: -1, y: -1 },
-  { x: -1, y: +1 },
-  { x: +1, y: -1 },
-  { x: +1, y: +1 }
+const POSITIONS_AROUND: Position[] = [
+  Position.of( -1,   0 ),
+  Position.of( +1,   0 ),
+  Position.of(  0,  -1 ),
+  Position.of(  0,  +1 ),
+  Position.of( -1,  -1 ),
+  Position.of( -1,  +1 ),
+  Position.of( +1,  -1 ),
+  Position.of( +1,  +1 )
 ];
 
 export const retrieveGame = () => {
@@ -46,35 +47,35 @@ export const newGame = () => {
   return game;
 }
 
-export const getColor = (board, pos) => {
+export const getColor = (board: any, pos: Position): Color => {
 
   return board[pos.y][pos.x];
 }
 
-const setColor = (board, pos, color) => {
+const setColor = (board: any, pos: Position, color: Color) => {
   board[pos.y][pos.x] = color;
 }
 
-const playPosition = (game, currPos, play) => {
+const playPosition = (game: any, currPos: Position, play: Position) => {
 
   const dir = getDirection(currPos, play);
   const dist = getDistance(currPos, play);
   let curr = currPos;
   for (let i = 1; i < dist; i++) {
-    curr = util.add(curr, dir);
+    curr = curr.add(dir);
     setColor(game.board, curr, game.playing);
   }
 
 }
 
-const getDistance = (a, b) => {
-  const p = util.substract(b, a);
+const getDistance = (a: Position, b: Position): number => {
+  const p = b.substract(a);
   return Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2));
 }
 
-const getDirection = (a, b) => {
+const getDirection = (a: Position, b: Position): Position => {
 
-  const p = util.substract(b, a);
+  const p = b.substract(a);
   if (p.x > 1) { p.x = 1; }
   if (p.x < -1) { p.x = -1; }
   if (p.y > 1) { p.y = 1; }
@@ -82,7 +83,7 @@ const getDirection = (a, b) => {
   return p;
 }
 
-const play = (game, play) => {
+const play = (game: any, play: Position) => {
 
   const positions = findPositions(game, game.playing, play);
   if (positions.length == 0) {
@@ -102,9 +103,9 @@ const play = (game, play) => {
 
 
 
-const findPosition = (game, pos, shift, distance) => {
+const findPosition = (game: any, pos: Position, shift: Position, distance: number): Position => {
 
-  const currPos = util.add(pos, shift);
+  const currPos = pos.add(shift);
   if (util.isOutsideBoard(currPos, BOARD_SIZE)) {
     return null;
   }
@@ -124,7 +125,7 @@ const findPosition = (game, pos, shift, distance) => {
 
 
 
-const getOppositeColor = (playing) => {
+const getOppositeColor = (playing: Color): Color => {
 
   if (playing == Color.BLACK)
     return Color.WHITE;
@@ -132,7 +133,7 @@ const getOppositeColor = (playing) => {
     return Color.BLACK;
 }
 
-const findPositions = (game, color, play) => {
+const findPositions = (game: any, color: Color, play: Position): Position[] => {
 
   if (util.isOutsideBoard(play, BOARD_SIZE)) {
     return [];
@@ -142,9 +143,9 @@ const findPositions = (game, color, play) => {
   if (curr != Color.NONE) {
     return [];
   } else {
-    let positions = [];
+    let positions: Position[] = [];
 
-    POSITIONS_AROUND.forEach(a => {
+    POSITIONS_AROUND.forEach((a:Position) => {
       let p = findPosition(game, play, a, 0);
       if (p != null) {
         positions.push(p);
@@ -155,7 +156,7 @@ const findPositions = (game, color, play) => {
   }
 }
 
-const switchPlayer = (game) => {
+const switchPlayer = (game: any): void => {
   if (game.playing === Color.WHITE) {
     game.playing = Color.BLACK;
   } else {
@@ -163,12 +164,12 @@ const switchPlayer = (game) => {
   }
 }
 
-export function gameReducer(game, action) {
+export function gameReducer(game: any, action: any) {
 
   switch (action.type) {
     case 'play':
       console.log(`play ${game.playing}`)
-      return play(game, action.pos)
+      return play(game, Position.of(action.pos.x, action.pos.y))
     case 'reset':
       console.log('reset')
       return newGame();

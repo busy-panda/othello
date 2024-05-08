@@ -10,5 +10,5 @@ export  function useLoadingStatus() {
       setTimeout(()=>setIsLoading(false), 200)
     }, []);
 
-    return isLoading;
-  }
+    return isLoading; 
+  } 
