@@ -1,5 +1,5 @@
-import { Game } from "./Game";
-import { GameDispatchAction } from "./GameContext";
+import { Game } from "@/objects/Game";
+import { GameDispatchAction } from "@/context/GameDispatchContext";
 
 
 export function gameReducer(game: Game, action: GameDispatchAction) {

@@ -25,6 +25,10 @@ export class Game {
         this.board = board;
     }
 
+    static of = (json : any): Game => {
+        return new Game(json.playing, json.board);
+    };
+
     static retrieveGame = (): Game => {
 
         const val = localStorage.getItem(OTHELLO);
@@ -33,10 +37,6 @@ export class Game {
         } else {
             return this.of(JSON.parse(val));
         }
-    };
-
-    static of = (json : any): Game => {
-        return new Game(json.playing, json.board);
     };
 
     static newGame = (): Game => {
@@ -75,7 +75,6 @@ export class Game {
             curr = curr.add(dir);
             this.setColor(curr, this.playing);
         }
-
     };
 
     getDistance = (a: Position, b: Position): number => {
@@ -95,7 +94,7 @@ export class Game {
 
     play = (play: Position): boolean => {
 
-        const positions = this.findPositions(this.playing, play);
+        const positions = this.findPositions(play);
         if (positions.length == 0) {
             console.log('wrong selection');
             return false;
@@ -143,7 +142,7 @@ export class Game {
             return Color.BLACK;
     };
 
-    findPositions = (color: Color, play: Position): Position[] => {
+    findPositions = (play: Position): Position[] => {
 
         if (play.isOutsideBoard(BOARD_SIZE)) {
             return [];

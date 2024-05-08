@@ -1,10 +1,11 @@
 
 import { useContext } from "react";
-import { GameContext, GameDispatchAction } from "@/providers/GameContext";
-import { GameDispatchContext } from "@/providers/GameContext";
-import { Color } from "@/providers/Color";
-import { Position } from "../providers/Position";
-import { Game } from "../providers/Game";
+import { GameContext } from "@/app/context/GameContext";
+import { GameDispatchContext } from "../context/GameDispatchContext";
+import { GameDispatchAction } from "../context/GameDispatchContext";
+import { Color } from "@/app/objects/Color";
+import { Position } from "../objects/Position";
+import { Game } from "../objects/Game";
 import { Dispatch } from "react";
 
 export default function  Cell  ({ x  , y} : any)  {
@@ -16,7 +17,7 @@ export default function  Cell  ({ x  , y} : any)  {
 
         dispatchGame( {
             type:'play',
-            pos: currentPosition} as GameDispatchAction
+            pos: currentPosition}
         );
     };
 

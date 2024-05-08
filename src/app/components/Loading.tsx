@@ -1,4 +1,4 @@
-import { useLoadingStatus } from "@/providers/useLoadingStatus";
+import { useLoadingStatus } from "@/app/hooks/useLoadingStatus";
 
 export default function Loading({children}:any) {
 

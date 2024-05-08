@@ -8,16 +8,16 @@ export class Position {
         this.y = y;
     }
 
+    static of(x: number, y: number): Position {
+        return new Position(x, y);
+    }
+
     substract(sub: Position): Position {
         return new Position(this.x - sub.x, this.y - sub.y);
     }
 
     add(sub: Position): Position {
         return new Position(this.x + sub.x, this.y + sub.y);
-    }
-
-    static of(x: number, y: number): Position {
-        return new Position(x, y);
     }
 
     isNegative(): boolean {

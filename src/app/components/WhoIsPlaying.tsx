@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import { Color } from "../providers/Color";
-import { GameContext } from "@/providers/GameContext";
+import { Color } from "../objects/Color";
+import { GameContext } from "@/app/context/GameContext";
 
 export default function WhoIsPlaying ()  {
 

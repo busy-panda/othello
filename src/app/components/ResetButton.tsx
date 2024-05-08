@@ -1,8 +1,7 @@
 import { useContext, useEffect } from "react";
-import { GameDispatchContext } from "@/providers/GameContext";
+import { GameDispatchContext } from "../context/GameDispatchContext";
 import Button from "./Button";
 import { useState } from "react";
-import { GameDispatchAction } from "@/providers/GameContext";
 export default function ResetButton ()  {
 
     const DELAY = 1000;
@@ -21,7 +20,7 @@ export default function ResetButton ()  {
                 top:0,
                 display: buttonVisible ?'':'none'
             }}
-            onClick={() => dispatchGame( {type:'reset'} as GameDispatchAction )}
+            onClick={() => dispatchGame( {type:'reset'}  )}
             text="RESET"
         />
     );
