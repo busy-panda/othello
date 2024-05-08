@@ -1,11 +1,7 @@
-import { util } from "./util";
 import { Position } from "./Position";
-
-export enum Color {
-  BLACK = 'B',
-  WHITE = 'W',
-  NONE = ' '
-}
+import { Color } from "./Color";
+import { Game } from "./Game";
+import { GameDispatchAction } from "./GameContext";
 
 const BOARD_SIZE: number = 8;
 
@@ -20,7 +16,8 @@ const POSITIONS_AROUND: Position[] = [
   Position.of( +1,  +1 )
 ];
 
-export const retrieveGame = () => {
+export const retrieveGame = () : Game => {
+
   const val = localStorage.getItem('othello');
   if (val == null) {
     return newGame();
@@ -29,34 +26,34 @@ export const retrieveGame = () => {
   }
 }
 
-export const newGame = () => {
-  const game = {
+export const newGame = () : Game => {
+  const game : Game  = {
     playing: Color.WHITE,
     board: [
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-      [' ', ' ', ' ', 'B', 'W', ' ', ' ', ' '],
-      [' ', ' ', ' ', 'W', 'B', ' ', ' ', ' '],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-      [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY],
+      [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY],
+      [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY],
+      [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.BLACK, Color.WHITE, Color.EMPTY, Color.EMPTY, Color.EMPTY],
+      [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.WHITE, Color.BLACK, Color.EMPTY, Color.EMPTY, Color.EMPTY],
+      [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY],
+      [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY],
+      [Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY, Color.EMPTY],
     ]
-  };
+  } ;
   localStorage.setItem('othello', JSON.stringify(game))
   return game;
 }
 
-export const getColor = (board: any, pos: Position): Color => {
+export const getColor = (board: Color[][], pos: Position): Color => {
 
   return board[pos.y][pos.x];
 }
 
-const setColor = (board: any, pos: Position, color: Color) => {
+const setColor = (board: Color[][], pos: Position, color: Color) => {
   board[pos.y][pos.x] = color;
 }
 
-const playPosition = (game: any, currPos: Position, play: Position) => {
+const playPosition = (game: Game, currPos: Position, play: Position) => {
 
   const dir = getDirection(currPos, play);
   const dist = getDistance(currPos, play);
@@ -83,7 +80,7 @@ const getDirection = (a: Position, b: Position): Position => {
   return p;
 }
 
-const play = (game: any, play: Position) => {
+const play = (game: Game, play: Position) => {
 
   const positions = findPositions(game, game.playing, play);
   if (positions.length == 0) {
@@ -103,16 +100,16 @@ const play = (game: any, play: Position) => {
 
 
 
-const findPosition = (game: any, pos: Position, shift: Position, distance: number): Position => {
+const findPosition = (game: Game, pos: Position, shift: Position, distance: number): Position => {
 
   const currPos = pos.add(shift);
-  if (util.isOutsideBoard(currPos, BOARD_SIZE)) {
+  if (currPos.isOutsideBoard(BOARD_SIZE)) {
     return null;
   }
   const currColor = getColor(game.board, currPos);
   if (getOppositeColor(game.playing) == currColor) {
     return findPosition(game, currPos, shift, distance + 1);
-  } else if (Color.NONE == currColor) {
+  } else if (Color.EMPTY == currColor) {
     return null;
   } else {
     if (distance == 0) {
@@ -123,8 +120,6 @@ const findPosition = (game: any, pos: Position, shift: Position, distance: numbe
   }
 }
 
-
-
 const getOppositeColor = (playing: Color): Color => {
 
   if (playing == Color.BLACK)
@@ -133,14 +128,14 @@ const getOppositeColor = (playing: Color): Color => {
     return Color.BLACK;
 }
 
-const findPositions = (game: any, color: Color, play: Position): Position[] => {
+const findPositions = (game: Game, color: Color, play: Position): Position[] => {
 
-  if (util.isOutsideBoard(play, BOARD_SIZE)) {
+  if (play.isOutsideBoard(BOARD_SIZE)) {
     return [];
   }
   const curr = getColor(game.board, play);
 
-  if (curr != Color.NONE) {
+  if (curr != Color.EMPTY) {
     return [];
   } else {
     let positions: Position[] = [];
@@ -156,7 +151,7 @@ const findPositions = (game: any, color: Color, play: Position): Position[] => {
   }
 }
 
-const switchPlayer = (game: any): void => {
+const switchPlayer = (game: Game): void => {
   if (game.playing === Color.WHITE) {
     game.playing = Color.BLACK;
   } else {
@@ -164,12 +159,12 @@ const switchPlayer = (game: any): void => {
   }
 }
 
-export function gameReducer(game: any, action: any) {
+export function gameReducer(game: Game, action: GameDispatchAction) {
 
   switch (action.type) {
     case 'play':
       console.log(`play ${game.playing}`)
-      return play(game, Position.of(action.pos.x, action.pos.y))
+      return play(game, action.pos)
     case 'reset':
       console.log('reset')
       return newGame();

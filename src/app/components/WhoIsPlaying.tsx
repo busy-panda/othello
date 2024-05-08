@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import { Color } from "../providers/gameReducer";
+import { Color } from "../providers/Color";
 import { GameContext } from "@/providers/GameContext";
 
 export default function WhoIsPlaying ()  {
@@ -16,10 +16,10 @@ export default function WhoIsPlaying ()  {
     }, [])
 
     return (
-        <div 
+        <div
             style={{
-                position:"absolute", 
-                right:0, 
+                position:"absolute",
+                right:0,
                 bottom:0,
                 display: labelVisible ?'':'none',
                 backgroundColor: '#111',
@@ -28,8 +28,8 @@ export default function WhoIsPlaying ()  {
                 paddingTop: '1%',
                 paddingBottom: '1%',
                 color:'#ddd'
-            }} 
-           
+            }}
+
         >Playing: {playing}</div>
     )
 }

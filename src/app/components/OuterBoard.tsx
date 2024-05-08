@@ -2,18 +2,18 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useLoadingStatus } from "@/providers/useLoadingStatus";
 
-export default function  OuterBoard  ({ image, children })  {
+export default function  OuterBoard  ({ image, children }: any)  {
 
     const [isLandscape, setIsLandscape] = useState(false);
     const isLoading = useLoadingStatus();
 
     const orientationchange = () => {
-        setIsLandscape(screen.availWidth > screen.availHeight); 
+        setIsLandscape(screen.availWidth > screen.availHeight);
     }
 
     useEffect(() => {
 
-        setIsLandscape(screen.availWidth > screen.availHeight); 
+        setIsLandscape(screen.availWidth > screen.availHeight);
         window.addEventListener("orientationchange", orientationchange);
         return () => {
             window.removeEventListener("orientationchange", orientationchange);
@@ -21,10 +21,9 @@ export default function  OuterBoard  ({ image, children })  {
     }, []);
 
     return (
-        <div id="table" 
+        <div id="table"
             style={
                 {
-                    opacity: isLoading ? 0 : 1,
                     height: isLandscape ? '95vh' : '136.5vw'  ,
                     width:  isLandscape ? '68.2vh' : '98vw',
                     background: `url(${image})`,

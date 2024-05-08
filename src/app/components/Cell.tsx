@@ -1,28 +1,28 @@
 
 import { useContext } from "react";
-import { GameContext } from "@/providers/GameContext";
+import { GameContext, GameDispatchAction } from "@/providers/GameContext";
 import { GameDispatchContext } from "@/providers/GameContext";
 import { getColor } from "@/providers/gameReducer";
-import { Color } from "@/providers/gameReducer";
+import { Color } from "@/providers/Color";
+import { Position } from "../providers/Position";
+import { Game } from "../providers/Game";
+import { Dispatch } from "react";
 
-export default function  Cell  ({ x , y})  {
+export default function  Cell  ({ x  , y} : any)  {
 
-    const game = useContext(GameContext)
-    const dispatchGame = useContext(GameDispatchContext)
+    const game : Game = useContext(GameContext)
+    const dispatchGame : Dispatch<GameDispatchAction> = useContext(GameDispatchContext)
 
     const onCellClick = () => {
 
         dispatchGame( {
-            type:'play', 
-            pos: currentPosition}
+            type:'play',
+            pos: currentPosition} as GameDispatchAction
         )
     }
 
-    const currentPosition = { 
-        x: x,
-        y: y
-    };
-    
+    const currentPosition = Position.of(x,y);
+
     const getImage = () => {
         const color = getColor(game.board, currentPosition);
         if (color === Color.WHITE) {
@@ -32,7 +32,7 @@ export default function  Cell  ({ x , y})  {
         } else {
             return '';
         }
-    } 
+    }
 
     return (
         <div className="flex-grow"

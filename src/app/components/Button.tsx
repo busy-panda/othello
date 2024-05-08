@@ -1,7 +1,7 @@
-export default function Button({text, onClick, style}) {
+export default function Button({text, onClick, style}: any) {
 
     return (
-        <button 
+        <button
             style={{
                 ...style,
                 backgroundColor: '#111',
@@ -13,7 +13,7 @@ export default function Button({text, onClick, style}) {
                 fontSize: '0.8rem',
                 margin: '0.5rem',
                 color: '#ddd',
-                
+
             }}
             onClick={onClick}
         >{text}</button>
