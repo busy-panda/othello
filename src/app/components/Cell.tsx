@@ -2,7 +2,6 @@
 import { useContext } from "react";
 import { GameContext, GameDispatchAction } from "@/providers/GameContext";
 import { GameDispatchContext } from "@/providers/GameContext";
-import { getColor } from "@/providers/gameReducer";
 import { Color } from "@/providers/Color";
 import { Position } from "../providers/Position";
 import { Game } from "../providers/Game";
@@ -24,7 +23,7 @@ export default function  Cell  ({ x  , y} : any)  {
     const currentPosition = Position.of(x,y);
 
     const getImage = () => {
-        const color = getColor(game.board, currentPosition);
+        const color = game.getColor(game.board, currentPosition);
         if (color === Color.WHITE) {
             return "url('white.png')";
         } else if (color === Color.BLACK) {

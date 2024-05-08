@@ -7,14 +7,12 @@ import { useReducer } from "react";
 import { gameReducer } from "@/providers/gameReducer";
 import { GameContext } from "@/providers/GameContext";
 import { GameDispatchContext } from "@/providers/GameContext";
-import { retrieveGame } from "@/providers/gameReducer";
-import { useLoadingStatus } from "@/providers/useLoadingStatus";
 import WhoIsPlaying from "./WhoIsPlaying";
+import { Game } from "../providers/Game";
 
-export default function Game() {
+export default function Main() {
 
-    const [game, dispatchGame] = useReducer(gameReducer, retrieveGame());
-    const isLoading = useLoadingStatus();
+    const [game, dispatchGame] = useReducer(gameReducer, Game.retrieveGame());
 
     return (
     <GameContext.Provider value={game}>

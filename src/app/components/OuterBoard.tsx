@@ -5,7 +5,6 @@ import { useLoadingStatus } from "@/providers/useLoadingStatus";
 export default function  OuterBoard  ({ image, children }: any)  {
 
     const [isLandscape, setIsLandscape] = useState(false);
-    const isLoading = useLoadingStatus();
 
     const orientationchange = () => {
         setIsLandscape(screen.availWidth > screen.availHeight);

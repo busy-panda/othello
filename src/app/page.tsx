@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Background from "@/components/Background";
-import Game from "@/components/Game";
+import Main from "@/app/components/Main";
 import { useState } from "react";
 import Loading from "@/components/Loading";
 
@@ -20,7 +20,7 @@ export default function Home() {
 
     <Background image="bg_game.jpg">
       <Loading>LOADING</Loading>
-      {ready && <Game />}
+      {ready && <Main />}
     </Background>
 
   );
