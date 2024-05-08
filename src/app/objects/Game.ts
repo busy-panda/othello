@@ -25,11 +25,11 @@ export class Game {
         this.board = board;
     }
 
-    static of = (json : any): Game => {
+    static of (json: any): Game {
         return new Game(json.playing, json.board);
     };
 
-    static retrieveGame = (): Game => {
+    static retrieveGame (): Game {
 
         const val = localStorage.getItem(OTHELLO);
         if (val == null) {
@@ -39,7 +39,8 @@ export class Game {
         }
     };
 
-    static newGame = (): Game => {
+    static newGame (): Game {
+
         const game = new Game(
             Color.WHITE,
             [
@@ -57,16 +58,16 @@ export class Game {
         return game;
     };
 
-    getColor = ( pos: Position): Color => {
+    getColor (pos: Position): Color {
 
         return this.board[pos.y][pos.x];
     };
 
-    setColor = (pos: Position, color: Color) => {
+    setColor (pos: Position, color: Color) {
         this.board[pos.y][pos.x] = color;
     };
 
-    playPosition = (currPos: Position, play: Position) => {
+    playPosition (currPos: Position, play: Position) {
 
         const dir = this.getDirection(currPos, play);
         const dist = this.getDistance(currPos, play);
@@ -77,12 +78,12 @@ export class Game {
         }
     };
 
-    getDistance = (a: Position, b: Position): number => {
+    getDistance (a: Position, b: Position): number {
         const p = b.substract(a);
         return Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2));
     };
 
-    getDirection = (a: Position, b: Position): Position => {
+    getDirection (a: Position, b: Position): Position {
 
         const p = b.substract(a);
         if (p.x > 1) { p.x = 1; }
@@ -92,7 +93,7 @@ export class Game {
         return p;
     };
 
-    play = (play: Position): boolean => {
+    play(play: Position): boolean {
 
         const positions = this.findPositions(play);
         if (positions.length == 0) {
@@ -110,17 +111,17 @@ export class Game {
         return true;
     };
 
-    clone = () : Game => {
-        return { ...this };
+    clone(): Game {
+        return new Game(this.playing, this.board);
     };
 
-    findPosition = (pos: Position, shift: Position, distance: number): Position => {
+    findPosition(pos: Position, shift: Position, distance: number): Position {
 
         const currPos = pos.add(shift);
         if (currPos.isOutsideBoard(BOARD_SIZE)) {
             return null;
         }
-        const currColor = this.getColor( currPos);
+        const currColor = this.getColor(currPos);
         if (this.getOppositeColor(this.playing) == currColor) {
             return this.findPosition(currPos, shift, distance + 1);
         } else if (Color.EMPTY == currColor) {
@@ -134,7 +135,7 @@ export class Game {
         }
     };
 
-    getOppositeColor = (playing: Color): Color => {
+    getOppositeColor(playing: Color): Color {
 
         if (playing == Color.BLACK)
             return Color.WHITE;
@@ -142,7 +143,7 @@ export class Game {
             return Color.BLACK;
     };
 
-    findPositions = (play: Position): Position[] => {
+    findPositions(play: Position): Position[] {
 
         if (play.isOutsideBoard(BOARD_SIZE)) {
             return [];
@@ -165,7 +166,7 @@ export class Game {
         }
     };
 
-    switchPlayer = (): void => {
+    switchPlayer(): void {
         if (this.playing === Color.WHITE) {
             this.playing = Color.BLACK;
         } else {
