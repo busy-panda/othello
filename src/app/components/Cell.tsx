@@ -23,7 +23,7 @@ export default function  Cell  ({ x  , y} : any)  {
     const currentPosition = Position.of(x,y);
 
     const getImage = () => {
-        const color = game.getColor(game.board, currentPosition);
+        const color = game.getColor(currentPosition);
         if (color === Color.WHITE) {
             return "url('white.png')";
         } else if (color === Color.BLACK) {

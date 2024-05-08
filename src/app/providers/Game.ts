@@ -29,9 +29,9 @@ export class Game {
 
         const val = localStorage.getItem(OTHELLO);
         if (val == null) {
-            return Game.newGame();
+            return this.newGame();
         } else {
-            return Game.of(JSON.parse(val));
+            return this.of(JSON.parse(val));
         }
     };
 
@@ -57,23 +57,23 @@ export class Game {
         return game;
     };
 
-    getColor = (board: Color[][], pos: Position): Color => {
+    getColor = ( pos: Position): Color => {
 
-        return board[pos.y][pos.x];
+        return this.board[pos.y][pos.x];
     };
 
-    setColor = (board: Color[][], pos: Position, color: Color) => {
-        board[pos.y][pos.x] = color;
+    setColor = (pos: Position, color: Color) => {
+        this.board[pos.y][pos.x] = color;
     };
 
-    playPosition = (game: Game, currPos: Position, play: Position) => {
+    playPosition = (currPos: Position, play: Position) => {
 
         const dir = this.getDirection(currPos, play);
         const dist = this.getDistance(currPos, play);
         let curr = currPos;
         for (let i = 1; i < dist; i++) {
             curr = curr.add(dir);
-            this.setColor(game.board, curr, game.playing);
+            this.setColor(curr, this.playing);
         }
 
     };
@@ -93,33 +93,37 @@ export class Game {
         return p;
     };
 
-    play = (game: Game, play: Position) => {
+    play = (play: Position): boolean => {
 
-        const positions = this.findPositions(game, game.playing, play);
+        const positions = this.findPositions(this.playing, play);
         if (positions.length == 0) {
             console.log('wrong selection');
-            return game;
+            return false;
         }
 
         positions.forEach(currPos => {
-            this.playPosition(game, currPos, play);
+            this.playPosition(currPos, play);
         });
 
-        this.setColor(game.board, play, game.playing);
-        this.switchPlayer(game);
-        localStorage.setItem(OTHELLO, JSON.stringify(game));
-        return { ...game };
+        this.setColor(play, this.playing);
+        this.switchPlayer();
+        localStorage.setItem(OTHELLO, JSON.stringify(this));
+        return true;
     };
 
-    findPosition = (game: Game, pos: Position, shift: Position, distance: number): Position => {
+    clone = () : Game => {
+        return { ...this };
+    };
+
+    findPosition = (pos: Position, shift: Position, distance: number): Position => {
 
         const currPos = pos.add(shift);
         if (currPos.isOutsideBoard(BOARD_SIZE)) {
             return null;
         }
-        const currColor = this.getColor(game.board, currPos);
-        if (this.getOppositeColor(game.playing) == currColor) {
-            return this.findPosition(game, currPos, shift, distance + 1);
+        const currColor = this.getColor( currPos);
+        if (this.getOppositeColor(this.playing) == currColor) {
+            return this.findPosition(currPos, shift, distance + 1);
         } else if (Color.EMPTY == currColor) {
             return null;
         } else {
@@ -139,12 +143,12 @@ export class Game {
             return Color.BLACK;
     };
 
-    findPositions = (game: Game, color: Color, play: Position): Position[] => {
+    findPositions = (color: Color, play: Position): Position[] => {
 
         if (play.isOutsideBoard(BOARD_SIZE)) {
             return [];
         }
-        const curr = this.getColor(game.board, play);
+        const curr = this.getColor(play);
 
         if (curr != Color.EMPTY) {
             return [];
@@ -152,7 +156,7 @@ export class Game {
             let positions: Position[] = [];
 
             POSITIONS_AROUND.forEach((a: Position) => {
-                let p = this.findPosition(game, play, a, 0);
+                let p = this.findPosition(play, a, 0);
                 if (p != null) {
                     positions.push(p);
                 }
@@ -162,11 +166,11 @@ export class Game {
         }
     };
 
-    switchPlayer = (game: Game): void => {
-        if (game.playing === Color.WHITE) {
-            game.playing = Color.BLACK;
+    switchPlayer = (): void => {
+        if (this.playing === Color.WHITE) {
+            this.playing = Color.BLACK;
         } else {
-            game.playing = Color.WHITE;
+            this.playing = Color.WHITE;
         }
     };
 }

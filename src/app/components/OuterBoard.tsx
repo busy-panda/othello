@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useLoadingStatus } from "@/providers/useLoadingStatus";
 
 export default function  OuterBoard  ({ image, children }: any)  {
 
