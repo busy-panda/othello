@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useLoadingStatus } from "../hooks/useLoadingStatus";
 
 export default function  OuterBoard  ({ image, children }: any)  {
 
     const [isLandscape, setIsLandscape] = useState(false);
+    const isLoading = useLoadingStatus();
 
     const orientationchange = () => {
         setIsLandscape(screen.availWidth > screen.availHeight);
@@ -22,6 +24,7 @@ export default function  OuterBoard  ({ image, children }: any)  {
         <div id="table"
             style={
                 {
+                    opacity: isLoading ? 0 : 1,
                     height: isLandscape ? '95vh' : '136.5vw'  ,
                     width:  isLandscape ? '68.2vh' : '98vw',
                     background: `url(${image})`,
